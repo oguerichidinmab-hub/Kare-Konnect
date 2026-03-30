@@ -1,0 +1,7 @@
+{
+  "name": "Kare Konnect",
+  "description": "An inclusive mental health support platform providing accessible and affordable care for trauma and depression, designed for dignity and accessibility.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

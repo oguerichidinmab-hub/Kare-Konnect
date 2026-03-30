@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sage-50: #f4f7f4;
+  --color-sage-100: #e2eae2;
+  --color-sage-200: #c9d8c9;
+  --color-sage-500: #7a9a7a;
+  --color-sage-600: #5f7a5f;
+  
+  --color-lavender-50: #f8f7fc;
+  --color-lavender-100: #f0edf9;
+  --color-lavender-500: #9b8cc5;
+  
+  --color-primary: var(--color-sage-500);
+  --color-secondary: var(--color-lavender-500);
+  
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--color-sage-50);
+  color: #2d3748;
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Accessibility Overrides */
+.high-contrast {
+  --color-sage-50: #ffffff;
+  --color-sage-500: #000000;
+  --color-lavender-500: #0000ff;
+  color: #000000;
+}
+
+.large-text {
+  font-size: 1.25rem;
+}
+
+.large-text h1 { font-size: 2.5rem; }
+.large-text h2 { font-size: 2rem; }
+.large-text p { font-size: 1.25rem; }
+
+.simple-view .card-shadow {
+  box-shadow: none;
+  border: 2px solid #e2eae2;
+}
+
+.simple-view .animate-all {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Custom Utilities */
+.card-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-blur {
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.8);
+}
