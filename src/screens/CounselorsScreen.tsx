@@ -35,7 +35,7 @@ const CounselorsScreen = () => {
   };
 
   return (
-    <div className="pb-24 pt-6 px-4 space-y-6 max-w-md mx-auto">
+    <div className="pt-6 px-4 space-y-6">
       <div className="space-y-2">
         <h1 className="text-2xl font-bold text-gray-900">Find Support</h1>
         <p className="text-gray-500 text-sm">Connect with trained professionals who understand your journey.</p>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../contexts/AppStateContext';
 import { useAccessibility } from '../contexts/AccessibilityContext';
 import { Card, Button, Badge } from '../components/UI';
@@ -6,19 +6,38 @@ import {
   User, Settings, Bell, Shield, 
   Accessibility, LogOut, ChevronRight,
   Moon, Sun, Type, Eye, Volume2,
-  TrendingUp, Award, Calendar
+  TrendingUp, Award, Calendar, Download
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 const ProfileScreen = () => {
   const { profile, moods, sessions } = useAppState();
   const { settings, updateSettings } = useAccessibility();
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   const moodCount = moods.length;
   const sessionCount = sessions.filter(s => s.status === 'completed').length;
 
   return (
-    <div className="pb-24 pt-6 px-4 space-y-6 max-w-md mx-auto">
+    <div className="pt-6 px-4 space-y-6">
       {/* Profile Header */}
       <div className="flex flex-col items-center text-center space-y-3">
         <div className="w-24 h-24 bg-white rounded-[2.5rem] card-shadow flex items-center justify-center relative">
@@ -32,6 +51,24 @@ const ProfileScreen = () => {
           <p className="text-sm text-gray-500">{profile?.location || 'Location not set'}</p>
         </div>
       </div>
+
+      {/* Install App Button */}
+      {deferredPrompt && (
+        <Card className="bg-sage-600 text-white border-none flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+              <Download size={20} />
+            </div>
+            <div>
+              <p className="text-sm font-bold">Install Kare Konnect</p>
+              <p className="text-[10px] opacity-80">Add to your home screen for quick access.</p>
+            </div>
+          </div>
+          <Button variant="secondary" size="sm" onClick={handleInstall}>
+            Install
+          </Button>
+        </Card>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4">

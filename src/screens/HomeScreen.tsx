@@ -34,7 +34,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <div className="pb-24 pt-6 px-4 space-y-6 max-w-md mx-auto">
+    <div className="pt-6 px-4 space-y-6">
       {/* Welcome Header */}
       <div className="flex justify-between items-start">
         <div>

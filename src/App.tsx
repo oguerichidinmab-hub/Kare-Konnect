@@ -19,17 +19,21 @@ const AppContent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-sage-50">
-      <Routes>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/counselors" element={<CounselorsScreen />} />
-        <Route path="/support" element={<SupportScreen />} />
-        <Route path="/sessions" element={<SessionsScreen />} />
-        <Route path="/assistant" element={<AssistantScreen />} />
-        <Route path="/profile" element={<ProfileScreen />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-      <BottomNav />
+    <div className="min-h-screen bg-sage-50 flex justify-center">
+      <div className="w-full max-w-md bg-sage-50 h-screen relative shadow-2xl md:shadow-sage-200/50 flex flex-col overflow-hidden">
+        <div className="flex-1 overflow-y-auto pb-24">
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/counselors" element={<CounselorsScreen />} />
+            <Route path="/support" element={<SupportScreen />} />
+            <Route path="/sessions" element={<SessionsScreen />} />
+            <Route path="/assistant" element={<AssistantScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </div>
+        <BottomNav />
+      </div>
     </div>
   );
 };

@@ -35,8 +35,9 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-sage-50 p-6 flex flex-col justify-center">
-      <AnimatePresence mode="wait">
+    <div className="min-h-screen bg-sage-50 flex justify-center items-center">
+      <div className="w-full max-w-md bg-sage-50 min-h-screen p-6 flex flex-col justify-center shadow-2xl md:shadow-sage-200/50">
+        <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div
             key="step1"
@@ -186,6 +187,7 @@ const Onboarding = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </div>
   );
 };

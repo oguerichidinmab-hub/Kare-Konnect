@@ -92,7 +92,7 @@ const AssistantScreen = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-sage-50 max-w-md mx-auto">
+    <div className="flex flex-col h-screen bg-sage-50">
       {/* Header */}
       <div className="p-4 nav-blur border-b border-sage-100 flex items-center gap-3">
         <Link to="/" className="p-2 hover:bg-sage-50 rounded-full transition-colors">
