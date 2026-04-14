@@ -10,10 +10,15 @@ import {
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
+import { AnimatePresence, motion } from 'motion/react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+
 const ProfileScreen = () => {
   const { profile, moods, sessions } = useAppState();
   const { settings, updateSettings } = useAccessibility();
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -30,6 +35,14 @@ const ProfileScreen = () => {
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
       setDeferredPrompt(null);
+    }
+  };
+
+  const confirmSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Sign out error:', error);
     }
   };
 
@@ -197,13 +210,52 @@ const ProfileScreen = () => {
         </div>
       </section>
 
-      <Button variant="ghost" className="w-full text-red-500 hover:bg-red-50">
+      <Button variant="ghost" className="w-full text-red-500 hover:bg-red-50" onClick={() => setShowSignOutConfirm(true)}>
         <LogOut size={18} /> Sign Out
       </Button>
 
       <p className="text-center text-[10px] text-gray-400 font-medium pb-4">
         Kare Konnect v1.0.0 • Designed with dignity
       </p>
+
+      {/* Sign Out Confirmation Modal */}
+      <AnimatePresence>
+        {showSignOutConfirm && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm"
+              onClick={() => setShowSignOutConfirm(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-xs bg-white rounded-3xl p-6 z-[70] shadow-2xl"
+            >
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto">
+                  <LogOut size={32} />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-gray-900">Sign Out?</h3>
+                  <p className="text-sm text-gray-500">Are you sure you want to sign out of Kare Konnect?</p>
+                </div>
+                <div className="flex flex-col gap-2 pt-2">
+                  <Button variant="primary" className="bg-red-500 hover:bg-red-600 border-red-500" onClick={confirmSignOut}>
+                    Yes, Sign Out
+                  </Button>
+                  <Button variant="ghost" onClick={() => setShowSignOutConfirm(false)}>
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

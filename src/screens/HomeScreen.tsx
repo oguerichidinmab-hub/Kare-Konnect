@@ -10,6 +10,7 @@ import {
 import { WELLNESS_TIPS } from '../data/mockData';
 import { Mood } from '../types';
 import { Link } from 'react-router-dom';
+import Logo from '../components/Logo';
 
 const HomeScreen = () => {
   const { profile, addMood, moods } = useAppState();
@@ -36,11 +37,8 @@ const HomeScreen = () => {
   return (
     <div className="pt-6 px-4 space-y-6">
       {/* Welcome Header */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Hello, {profile?.name}</h1>
-          <p className="text-gray-500 text-sm">How are you feeling right now?</p>
-        </div>
+      <div className="flex justify-between items-center">
+        <Logo showText size={24} />
         <Link to="/profile">
           <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center card-shadow">
             <Settings size={20} className="text-gray-400" />

@@ -3,8 +3,9 @@ import { useAppState } from '../contexts/AppStateContext';
 import { UserProfile } from '../types';
 import { Button, Card } from './UI';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Accessibility, MapPin, MessageCircle } from 'lucide-react';
+import { Accessibility, MapPin, MessageCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
+import Logo from './Logo';
 
 const Onboarding = () => {
   const { setProfile } = useAppState();
@@ -35,9 +36,8 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-sage-50 flex justify-center items-center">
-      <div className="w-full max-w-md bg-sage-50 min-h-screen p-6 flex flex-col justify-center shadow-2xl md:shadow-sage-200/50">
-        <AnimatePresence mode="wait">
+    <div className="w-full max-w-md bg-sage-50 min-h-screen p-6 flex flex-col justify-center shadow-2xl md:shadow-sage-200/50">
+      <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div
             key="step1"
@@ -47,9 +47,7 @@ const Onboarding = () => {
             className="space-y-6"
           >
             <div className="text-center space-y-2">
-              <div className="w-16 h-16 bg-sage-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Heart className="text-white" size={32} />
-              </div>
+              <Logo size={32} className="justify-center mb-4" />
               <h1 className="text-3xl font-bold text-gray-900">Welcome to Kare Konnect</h1>
               <p className="text-gray-500">Let's get to know you so we can provide the best support.</p>
             </div>
@@ -187,7 +185,6 @@ const Onboarding = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
     </div>
   );
 };
