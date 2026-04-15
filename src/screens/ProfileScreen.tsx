@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAppState } from '../contexts/AppStateContext';
 import { useAccessibility } from '../contexts/AccessibilityContext';
-import { Card, Button, Badge } from '../components/UI';
+import { Card, Button, Badge, Modal } from '../components/UI';
 import { 
   User, Settings, Bell, Shield, 
   Accessibility, LogOut, ChevronRight,
   Moon, Sun, Type, Eye, Volume2,
-  TrendingUp, Award, Calendar, Download
+  TrendingUp, Award, Calendar, Download, Database, Trash2, AlertCircle
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -19,6 +19,16 @@ const ProfileScreen = () => {
   const { settings, updateSettings } = useAccessibility();
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
+  
+  // Modals state
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showData, setShowData] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // Mock settings state
+  const [notifSettings, setNotifSettings] = useState({ reminders: true, counselor: true, wellness: false });
+  const [privacySettings, setPrivacySettings] = useState({ visibility: 'private', contact: 'counselors_only', appLock: false });
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -193,17 +203,24 @@ const ProfileScreen = () => {
           Preferences
         </h2>
         <div className="space-y-2">
-          <Card className="flex items-center justify-between py-3">
+          <Card className="flex items-center justify-between py-3 cursor-pointer hover:bg-gray-50" onClick={() => setShowNotifications(true)}>
             <div className="flex items-center gap-3">
               <Bell size={18} className="text-gray-400" />
               <span className="text-sm font-medium">Notifications</span>
             </div>
             <ChevronRight size={18} className="text-gray-300" />
           </Card>
-          <Card className="flex items-center justify-between py-3">
+          <Card className="flex items-center justify-between py-3 cursor-pointer hover:bg-gray-50" onClick={() => setShowPrivacy(true)}>
             <div className="flex items-center gap-3">
               <Shield size={18} className="text-gray-400" />
-              <span className="text-sm font-medium">Privacy & Data</span>
+              <span className="text-sm font-medium">Privacy Settings</span>
+            </div>
+            <ChevronRight size={18} className="text-gray-300" />
+          </Card>
+          <Card className="flex items-center justify-between py-3 cursor-pointer hover:bg-gray-50" onClick={() => setShowData(true)}>
+            <div className="flex items-center gap-3">
+              <Database size={18} className="text-gray-400" />
+              <span className="text-sm font-medium">Data Management</span>
             </div>
             <ChevronRight size={18} className="text-gray-300" />
           </Card>
@@ -256,6 +273,133 @@ const ProfileScreen = () => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Notifications Modal */}
+      <Modal isOpen={showNotifications} onClose={() => setShowNotifications(false)} title="Notifications">
+        <div className="space-y-4">
+          <p className="text-sm text-gray-500 mb-4">Manage how Kare Konnect communicates with you.</p>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium">Daily Reminders</p>
+                <p className="text-xs text-gray-500">Mood check-ins and tips</p>
+              </div>
+              <button 
+                onClick={() => setNotifSettings(s => ({ ...s, reminders: !s.reminders }))}
+                className={cn("w-12 h-6 rounded-full transition-colors relative", notifSettings.reminders ? "bg-sage-500" : "bg-gray-200")}
+              >
+                <div className={cn("absolute top-1 w-4 h-4 bg-white rounded-full transition-transform", notifSettings.reminders ? "left-7" : "left-1")} />
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium">Counselor Messages</p>
+                <p className="text-xs text-gray-500">Updates from your counselor</p>
+              </div>
+              <button 
+                onClick={() => setNotifSettings(s => ({ ...s, counselor: !s.counselor }))}
+                className={cn("w-12 h-6 rounded-full transition-colors relative", notifSettings.counselor ? "bg-sage-500" : "bg-gray-200")}
+              >
+                <div className={cn("absolute top-1 w-4 h-4 bg-white rounded-full transition-transform", notifSettings.counselor ? "left-7" : "left-1")} />
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium">Wellness Check-ins</p>
+                <p className="text-xs text-gray-500">Occasional check-ins from the app</p>
+              </div>
+              <button 
+                onClick={() => setNotifSettings(s => ({ ...s, wellness: !s.wellness }))}
+                className={cn("w-12 h-6 rounded-full transition-colors relative", notifSettings.wellness ? "bg-sage-500" : "bg-gray-200")}
+              >
+                <div className={cn("absolute top-1 w-4 h-4 bg-white rounded-full transition-transform", notifSettings.wellness ? "left-7" : "left-1")} />
+              </button>
+            </div>
+          </div>
+          <Button className="w-full mt-4" onClick={() => setShowNotifications(false)}>Save Preferences</Button>
+        </div>
+      </Modal>
+
+      {/* Privacy Modal */}
+      <Modal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} title="Privacy Settings">
+        <div className="space-y-4">
+          <p className="text-sm text-gray-500 mb-4">Control your data visibility and app security.</p>
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs font-bold text-gray-400 uppercase mb-2 block">Data Visibility</label>
+              <select 
+                className="w-full p-3 rounded-xl border border-sage-100 bg-white focus:ring-2 focus:ring-sage-500 outline-none text-sm"
+                value={privacySettings.visibility}
+                onChange={(e) => setPrivacySettings(s => ({ ...s, visibility: e.target.value }))}
+              >
+                <option value="private">Private (Only me)</option>
+                <option value="counselor">Shared with my counselor</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-gray-400 uppercase mb-2 block">Who can contact me</label>
+              <select 
+                className="w-full p-3 rounded-xl border border-sage-100 bg-white focus:ring-2 focus:ring-sage-500 outline-none text-sm"
+                value={privacySettings.contact}
+                onChange={(e) => setPrivacySettings(s => ({ ...s, contact: e.target.value }))}
+              >
+                <option value="counselors_only">My Counselors Only</option>
+                <option value="anyone">Any Verified Counselor</option>
+                <option value="none">Do Not Contact</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between pt-2">
+              <div>
+                <p className="text-sm font-medium">App Lock</p>
+                <p className="text-xs text-gray-500">Require biometrics to open</p>
+              </div>
+              <button 
+                onClick={() => setPrivacySettings(s => ({ ...s, appLock: !s.appLock }))}
+                className={cn("w-12 h-6 rounded-full transition-colors relative", privacySettings.appLock ? "bg-sage-500" : "bg-gray-200")}
+              >
+                <div className={cn("absolute top-1 w-4 h-4 bg-white rounded-full transition-transform", privacySettings.appLock ? "left-7" : "left-1")} />
+              </button>
+            </div>
+          </div>
+          <Button className="w-full mt-4" onClick={() => setShowPrivacy(false)}>Save Settings</Button>
+        </div>
+      </Modal>
+
+      {/* Data Management Modal */}
+      <Modal isOpen={showData} onClose={() => setShowData(false)} title="Data Management">
+        <div className="space-y-4">
+          <p className="text-sm text-gray-500 mb-4">Manage your personal data stored in Kare Konnect.</p>
+          <div className="space-y-3">
+            <Button variant="outline" className="w-full justify-between" onClick={() => alert('Exporting data...')}>
+              Export My Data <Download size={16} />
+            </Button>
+            <Button variant="outline" className="w-full justify-between" onClick={() => setShowDeleteConfirm(true)}>
+              Clear Mood History <Trash2 size={16} />
+            </Button>
+            <Button variant="danger" className="w-full justify-between mt-4" onClick={() => setShowDeleteConfirm(true)}>
+              Delete Account <AlertCircle size={16} />
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal isOpen={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)} title="Are you sure?">
+        <div className="space-y-4">
+          <div className="p-4 bg-red-50 text-red-700 rounded-xl text-sm">
+            This action is permanent and cannot be undone. All your data will be permanently removed from our servers.
+          </div>
+          <div className="flex gap-3">
+            <Button variant="ghost" className="flex-1" onClick={() => setShowDeleteConfirm(false)}>Cancel</Button>
+            <Button variant="danger" className="flex-1" onClick={() => {
+              setShowDeleteConfirm(false);
+              setShowData(false);
+              // Mock delete action
+              alert('Data deleted successfully.');
+            }}>Confirm Delete</Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

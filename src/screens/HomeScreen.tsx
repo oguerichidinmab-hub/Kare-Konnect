@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppState } from '../contexts/AppStateContext';
 import { Card, Button, Badge } from '../components/UI';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Smile, Meh, Frown, AlertCircle, 
   Calendar, MessageSquare, Sparkles, 
@@ -14,8 +14,15 @@ import Logo from '../components/Logo';
 
 const HomeScreen = () => {
   const { profile, addMood, moods } = useAppState();
-  const [showMoodCheck, setShowMoodCheck] = useState(true);
+  
+  const today = new Date().toISOString().split('T')[0];
+  const todaysMood = moods.find(m => m.date.startsWith(today));
+
+  const [isUpdating, setIsUpdating] = useState(false);
   const [tip] = useState(() => WELLNESS_TIPS[Math.floor(Math.random() * WELLNESS_TIPS.length)]);
+
+  const showMoodCheck = !todaysMood || isUpdating;
+  const selectedMood = todaysMood ? todaysMood.mood : null;
 
   const handleMoodSelect = (mood: Mood) => {
     addMood({
@@ -23,7 +30,7 @@ const HomeScreen = () => {
       mood,
       note: ''
     });
-    setShowMoodCheck(false);
+    setIsUpdating(false);
   };
 
   const moodIcons = {
@@ -32,6 +39,14 @@ const HomeScreen = () => {
     okay: { icon: Meh, color: 'text-yellow-500', bg: 'bg-yellow-50' },
     low: { icon: Frown, color: 'text-orange-500', bg: 'bg-orange-50' },
     struggling: { icon: AlertCircle, color: 'text-red-500', bg: 'bg-red-50' },
+  };
+
+  const moodResponses: Record<Mood, { title: string, message: string, action: string, link: string }> = {
+    great: { title: "That's wonderful!", message: "Keep up the positive energy. Maybe share it with someone today.", action: "Write a note", link: "/assistant" },
+    good: { title: "Glad to hear it.", message: "A good day is a great foundation. What's working well for you?", action: "Track it", link: "/assistant" },
+    okay: { title: "Okay is okay.", message: "Some days are just steady. Remember to take breaks.", action: "Read a tip", link: "/support" },
+    low: { title: "Take it easy today.", message: "It's normal to have low days. Be gentle with yourself.", action: "Try a breathing exercise", link: "/assistant" },
+    struggling: { title: "We're here for you.", message: "You don't have to go through this alone. Consider reaching out.", action: "Find a counselor", link: "/counselors" },
   };
 
   return (
@@ -47,43 +62,71 @@ const HomeScreen = () => {
       </div>
 
       {/* Mood Check-in */}
-      {showMoodCheck ? (
-        <Card className="bg-gradient-to-br from-sage-500 to-sage-600 text-white border-none">
-          <h3 className="font-bold mb-4">Daily Mood Check-in</h3>
-          <div className="flex justify-between">
-            {(Object.keys(moodIcons) as Mood[]).map((mood) => {
-              const { icon: Icon } = moodIcons[mood];
-              return (
-                <button
-                  key={mood}
-                  onClick={() => handleMoodSelect(mood)}
-                  className="flex flex-col items-center gap-2 group"
-                >
-                  <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center group-active:scale-90 transition-transform">
-                    <Icon size={24} />
+      <AnimatePresence mode="wait">
+        {showMoodCheck ? (
+          <motion.div
+            key="mood-check"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <Card className="bg-gradient-to-br from-sage-500 to-sage-600 text-white border-none">
+              <h3 className="font-bold mb-4">Daily Mood Check-in</h3>
+              <div className="flex justify-between">
+                {(Object.keys(moodIcons) as Mood[]).map((mood) => {
+                  const { icon: Icon } = moodIcons[mood];
+                  return (
+                    <button
+                      key={mood}
+                      onClick={() => handleMoodSelect(mood)}
+                      className="flex flex-col items-center gap-2 group"
+                    >
+                      <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center group-active:scale-90 transition-transform">
+                        <Icon size={24} />
+                      </div>
+                      <span className="text-[10px] font-medium capitalize opacity-80">{mood}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </Card>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="mood-response"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <Card className="bg-sage-50 border border-sage-100 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                    {selectedMood && React.createElement(moodIcons[selectedMood].icon, { className: moodIcons[selectedMood].color, size: 20 })}
                   </div>
-                  <span className="text-[10px] font-medium capitalize opacity-80">{mood}</span>
-                </button>
-              );
-            })}
-          </div>
-        </Card>
-      ) : (
-        <Card className="bg-sage-100 border-none flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-              <Sparkles className="text-sage-500" size={20} />
-            </div>
-            <div>
-              <p className="text-xs font-bold text-sage-700">Mood logged!</p>
-              <p className="text-[10px] text-sage-600">Keep tracking to see patterns.</p>
-            </div>
-          </div>
-          <Button variant="ghost" size="sm" onClick={() => setShowMoodCheck(true)}>
-            Update
-          </Button>
-        </Card>
-      )}
+                  <div>
+                    <p className="text-sm font-bold text-gray-900">{selectedMood ? moodResponses[selectedMood].title : 'Mood logged!'}</p>
+                    <p className="text-xs text-gray-500">Mood saved successfully.</p>
+                  </div>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => setIsUpdating(true)}>
+                  Update
+                </Button>
+              </div>
+              {selectedMood && (
+                <div className="pt-2 border-t border-sage-100/50">
+                  <p className="text-sm text-gray-600 mb-3">{moodResponses[selectedMood].message}</p>
+                  <Link to={moodResponses[selectedMood].link}>
+                    <Button variant="outline" size="sm" className="w-full text-xs py-2">
+                      {moodResponses[selectedMood].action}
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Quick Actions Grid */}
       <div className="grid grid-cols-2 gap-4">

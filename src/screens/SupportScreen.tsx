@@ -1,25 +1,46 @@
 import React, { useState } from 'react';
-import { Card, Button, Badge } from '../components/UI';
+import { Card, Button, Badge, Modal } from '../components/UI';
 import { 
   HeartPulse, Home, AlertCircle, 
   BookOpen, ChevronRight, Phone, 
   MapPin, Calendar, Clock, Accessibility,
-  CheckCircle2
+  CheckCircle2, Share2, MessageCircle
 } from 'lucide-react';
 import { MOCK_RESOURCES } from '../data/mockData';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppState } from '../contexts/AppStateContext';
 import { cn } from '../lib/utils';
+import { Resource } from '../types';
 
 const SupportScreen = () => {
   const [activeTab, setActiveTab] = useState<'resources' | 'emergency' | 'home-visit'>('resources');
   const [showSuccess, setShowSuccess] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<Resource | null>(null);
   const { profile } = useAppState();
 
   const handleHomeVisitSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
+  };
+
+  const handleShare = async () => {
+    if (!selectedArticle) return;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: selectedArticle.title,
+          text: `Check out this article on Kare Konnect: ${selectedArticle.title}`,
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.log('Error sharing', error);
+      }
+    } else {
+      // Fallback for browsers that don't support navigator.share
+      alert(`Link copied to clipboard: ${window.location.href}`);
+    }
   };
 
   return (
@@ -62,7 +83,7 @@ const SupportScreen = () => {
                 </div>
                 <h3 className="font-bold text-gray-900">{resource.title}</h3>
                 <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{resource.content}</p>
-                <Button variant="ghost" size="sm" className="w-full justify-between p-0 h-auto">
+                <Button variant="ghost" size="sm" className="w-full justify-between p-0 h-auto" onClick={() => setSelectedArticle(resource)}>
                   Read Article <ChevronRight size={16} />
                 </Button>
               </Card>
@@ -88,9 +109,11 @@ const SupportScreen = () => {
                   <p className="text-xs text-red-700">If you are in immediate danger, call emergency services.</p>
                 </div>
               </div>
-              <Button variant="danger" className="w-full py-4 text-lg">
-                <Phone size={20} /> Call 911 / Emergency
-              </Button>
+              <a href="tel:911" className="block">
+                <Button variant="danger" className="w-full py-4 text-lg">
+                  <Phone size={20} /> Call 911 / Emergency
+                </Button>
+              </a>
             </Card>
 
             <div className="space-y-3">
@@ -105,7 +128,9 @@ const SupportScreen = () => {
                     <p className="text-xs text-gray-500">Text HOME to 741741</p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm">Text</Button>
+                <a href="sms:741741?body=HOME">
+                  <Button variant="outline" size="sm">Text</Button>
+                </a>
               </Card>
               <Card className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -117,7 +142,9 @@ const SupportScreen = () => {
                     <p className="text-xs text-gray-500">Call 988</p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm">Call</Button>
+                <a href="tel:988">
+                  <Button variant="outline" size="sm">Call</Button>
+                </a>
               </Card>
             </div>
 
@@ -134,7 +161,14 @@ const SupportScreen = () => {
                       <p className="text-xs text-gray-500">Your designated emergency contact</p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm">Call</Button>
+                  <div className="flex gap-2">
+                    <a href={`sms:${profile.trustedContact}`}>
+                      <Button variant="outline" size="icon" className="h-8 w-8"><MessageCircle size={14} /></Button>
+                    </a>
+                    <a href={`tel:${profile.trustedContact}`}>
+                      <Button variant="primary" size="sm">Call</Button>
+                    </a>
+                  </div>
                 </Card>
               </div>
             )}
@@ -240,6 +274,71 @@ const SupportScreen = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Article Reader Modal */}
+      <Modal
+        isOpen={!!selectedArticle}
+        onClose={() => setSelectedArticle(null)}
+        className="w-full h-full max-h-[100vh] rounded-none p-0 flex flex-col"
+      >
+        {selectedArticle && (
+          <div className="flex flex-col h-full bg-white">
+            <div className="sticky top-0 bg-white/80 backdrop-blur-md z-10 p-4 border-b border-gray-100 flex justify-between items-center">
+              <Badge className="bg-lavender-50 text-lavender-500">{selectedArticle.category}</Badge>
+              <div className="flex gap-2">
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={handleShare}>
+                  <Share2 size={18} />
+                </Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => setSelectedArticle(null)}>
+                  <ChevronRight size={20} className="rotate-180" />
+                </Button>
+              </div>
+            </div>
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              <div className="space-y-4">
+                <h1 className="text-3xl font-bold text-gray-900 leading-tight">{selectedArticle.title}</h1>
+                <div className="flex items-center gap-4 text-xs text-gray-500 font-medium">
+                  <span className="flex items-center gap-1"><Clock size={14} /> {selectedArticle.readTime} read</span>
+                  <span className="flex items-center gap-1"><BookOpen size={14} /> Kare Konnect Editorial</span>
+                </div>
+              </div>
+              
+              <div className="w-full h-48 bg-sage-100 rounded-2xl flex items-center justify-center overflow-hidden">
+                <img 
+                  src={`https://picsum.photos/seed/${selectedArticle.id}/800/400?blur=2`} 
+                  alt={selectedArticle.title}
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+
+              <div className="prose prose-sage max-w-none">
+                <p className="text-lg text-gray-700 leading-relaxed font-medium">
+                  {selectedArticle.content}
+                </p>
+                <p className="text-gray-600 leading-relaxed mt-4">
+                  Understanding your mental health is a journey. It's important to recognize the signs and take proactive steps towards well-being. This article explores key concepts and provides actionable advice for managing daily challenges.
+                </p>
+                <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">Key Takeaways</h3>
+                <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                  <li>Acknowledge your feelings without judgment.</li>
+                  <li>Establish a consistent daily routine.</li>
+                  <li>Reach out to support networks when needed.</li>
+                  <li>Practice self-compassion regularly.</li>
+                </ul>
+                <p className="text-gray-600 leading-relaxed mt-4">
+                  Remember, seeking help is a sign of strength, not weakness. If you find yourself struggling, consider reaching out to one of our qualified counselors or using the emergency resources available in the app.
+                </p>
+              </div>
+            </div>
+            <div className="p-4 border-t border-gray-100 bg-gray-50">
+              <Button className="w-full" onClick={() => setSelectedArticle(null)}>
+                Finished Reading
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

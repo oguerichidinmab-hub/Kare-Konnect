@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppState } from '../contexts/AppStateContext';
-import { Card, Button, Badge } from '../components/UI';
-import { Calendar, Clock, MapPin, MessageCircle, Phone, Home, AlertCircle, ChevronRight } from 'lucide-react';
+import { Card, Button, Badge, Modal } from '../components/UI';
+import { Calendar, Clock, MapPin, MessageCircle, Phone, Home, AlertCircle, ChevronRight, CheckCircle2 } from 'lucide-react';
 import { format, isAfter, parseISO } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { cn } from '../lib/utils';
+import { Session } from '../types';
 
 const SessionsScreen = () => {
   const { sessions, cancelSession } = useAppState();
+  const [rescheduleSession, setRescheduleSession] = useState<Session | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const upcoming = sessions.filter(s => s.status === 'upcoming');
   const past = sessions.filter(s => s.status === 'completed' || s.status === 'cancelled');
@@ -16,6 +19,13 @@ const SessionsScreen = () => {
     chat: MessageCircle,
     call: Phone,
     home: Home,
+  };
+
+  const handleRescheduleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setRescheduleSession(null);
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
   };
 
   return (
@@ -61,7 +71,7 @@ const SessionsScreen = () => {
                   <Button variant="outline" size="sm" className="flex-1" onClick={() => cancelSession(session.id)}>
                     Cancel
                   </Button>
-                  <Button size="sm" className="flex-1">
+                  <Button size="sm" className="flex-1" onClick={() => setRescheduleSession(session)}>
                     Reschedule
                   </Button>
                 </div>
@@ -124,6 +134,56 @@ const SessionsScreen = () => {
           </div>
         </div>
       </Card>
+
+      {/* Reschedule Modal */}
+      <Modal isOpen={!!rescheduleSession} onClose={() => setRescheduleSession(null)} title="Reschedule Session">
+        {rescheduleSession && (
+          <form onSubmit={handleRescheduleSubmit} className="space-y-4">
+            <p className="text-sm text-gray-500 mb-4">
+              Select a new date and time for your {rescheduleSession.type} session with {rescheduleSession.counselorName}.
+            </p>
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase mb-1 block">New Date</label>
+                <div className="relative">
+                  <Calendar className="absolute left-3 top-3 text-gray-400" size={18} />
+                  <input 
+                    required
+                    type="date" 
+                    className="w-full p-3 pl-10 rounded-xl border border-sage-100 bg-white focus:ring-2 focus:ring-sage-500 outline-none text-sm"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase mb-1 block">New Time</label>
+                <div className="relative">
+                  <Clock className="absolute left-3 top-3 text-gray-400" size={18} />
+                  <input 
+                    required
+                    type="time" 
+                    className="w-full p-3 pl-10 rounded-xl border border-sage-100 bg-white focus:ring-2 focus:ring-sage-500 outline-none text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+            <Button type="submit" className="w-full py-4 mt-4">Confirm Reschedule</Button>
+          </form>
+        )}
+      </Modal>
+
+      {/* Success Modal */}
+      <Modal isOpen={showSuccess} onClose={() => setShowSuccess(false)}>
+        <div className="text-center space-y-4 py-4">
+          <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
+            <CheckCircle2 size={32} />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-xl font-bold">Rescheduled!</h3>
+            <p className="text-sm text-gray-500">Your session has been successfully updated.</p>
+          </div>
+          <Button variant="outline" className="w-full" onClick={() => setShowSuccess(false)}>Close</Button>
+        </div>
+      </Modal>
     </div>
   );
 };
