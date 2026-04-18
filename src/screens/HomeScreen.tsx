@@ -105,8 +105,10 @@ const HomeScreen = () => {
                     {selectedMood && React.createElement(moodIcons[selectedMood].icon, { className: moodIcons[selectedMood].color, size: 20 })}
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-900">{selectedMood ? moodResponses[selectedMood].title : 'Mood logged!'}</p>
-                    <p className="text-xs text-gray-500">Mood saved successfully.</p>
+                    <p className="text-sm font-bold text-gray-900">
+                      You're feeling <span className="text-sage-600 capitalize">{selectedMood}</span> today
+                    </p>
+                    <p className="text-xs text-gray-500">Logged at {new Date(todaysMood?.date || '').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setIsUpdating(true)}>

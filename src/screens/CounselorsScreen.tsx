@@ -308,7 +308,7 @@ const CounselorsScreen = () => {
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-gray-900">Expertise</h4>
             <div className="flex flex-wrap gap-2">
-              {['All', 'Anxiety', 'Depression', 'Trauma', 'Grief', 'Disability Support', 'Maternal Mental Health', 'Neurodiversity', 'Addiction'].map(exp => (
+              {['All', 'Anxiety', 'Depression', 'Trauma', 'Grief', 'Disability Support', 'Maternal Mental Health', 'Neurodiversity', 'Addiction', 'Burnout', 'Elderly Care', 'Entrepreneurial Stress'].map(exp => (
                 <FilterBadge key={exp} active={filterExpertise === exp} label={exp} onClick={() => setFilterExpertise(exp)} />
               ))}
             </div>
@@ -316,7 +316,7 @@ const CounselorsScreen = () => {
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-gray-900">Specialties</h4>
             <div className="flex flex-wrap gap-2">
-              {['All', 'EMDR', 'CBT', 'Mindfulness', 'Person-Centered Therapy', 'Family Systems', 'Motivational Interviewing', 'Grief Counseling', 'Trauma-Informed Care', 'Social Skills Coaching'].map(spec => (
+              {['All', 'EMDR', 'CBT', 'Mindfulness', 'Person-Centered Therapy', 'Family Systems', 'Motivational Interviewing', 'Grief Counseling', 'Trauma-Informed Care', 'Social Skills Coaching', 'Career Coaching', 'Executive Coaching'].map(spec => (
                 <FilterBadge key={spec} active={filterSpecialty === spec} label={spec} onClick={() => setFilterSpecialty(spec)} />
               ))}
             </div>

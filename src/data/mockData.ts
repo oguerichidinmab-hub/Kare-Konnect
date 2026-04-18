@@ -182,42 +182,145 @@ export const MOCK_COUNSELORS: Counselor[] = [
     costRange: 'medium',
     isSubsidized: true,
     imageUrl: 'https://picsum.photos/seed/emeka/200/200'
+  },
+  {
+    id: '14',
+    name: 'Dr. Temitope Balogun',
+    expertise: ['Digital Wellness', 'Burnout', 'Work-Life Harmony'],
+    languages: ['English', 'Yoruba'],
+    specialties: ['CBT', 'Mindfulness', 'Career Coaching'],
+    availability: 'Mon-Fri, 5pm-10pm',
+    sessionTypes: ['chat', 'call'],
+    bio: 'Helping tech professionals in Nigeria manage the unique pressures of the digital economy and remote work burnout.',
+    accessibilityOptions: ['Low-Data Chat Interface', 'Late Night Sessions'],
+    costRange: 'high',
+    isSubsidized: false,
+    imageUrl: 'https://picsum.photos/seed/temi/200/200'
+  },
+  {
+    id: '15',
+    name: 'Sade Adesanya',
+    expertise: ['Elderly Care', 'Caregiver Support', 'Grief'],
+    languages: ['English', 'Yoruba', 'Pidgin'],
+    specialties: ['Grief Counseling', 'Person-Centered Therapy'],
+    availability: 'Tue-Sat, 9am-4pm',
+    sessionTypes: ['chat', 'call', 'home'],
+    bio: 'Specializing in support for the elderly and their caregivers, focusing on aging with dignity and managing caregiver fatigue.',
+    accessibilityOptions: ['Large Text Home Materials', 'Home Visits for Senior Citizens'],
+    costRange: 'low',
+    isSubsidized: true,
+    imageUrl: 'https://picsum.photos/seed/sade/200/200'
+  },
+  {
+    id: '16',
+    name: 'Ibrahim Musa',
+    expertise: ['Religious Trauma', 'Identity', 'Family Conflict'],
+    languages: ['English', 'Hausa', 'Arabic'],
+    specialties: ['Family Systems', 'Spiritual Care (Secular)'],
+    availability: 'Sat-Sun, 2pm-8pm',
+    sessionTypes: ['chat', 'call'],
+    bio: 'Navigating the intersection of faith, tradition, and mental health in Northern Nigeria with sensitivity and empathy.',
+    accessibilityOptions: ['Hausa/Arabic Support', 'Safe Space for Identity Exploration'],
+    costRange: 'medium',
+    isSubsidized: true,
+    imageUrl: 'https://picsum.photos/seed/ibrahim/200/200'
+  },
+  {
+    id: '17',
+    name: 'Nneka Eze',
+    expertise: ['Disability Advocacy', 'Self-Esteem', 'Chronic Pain'],
+    languages: ['English', 'Igbo', 'Pidgin'],
+    specialties: ['Motivational Interviewing', 'CBT'],
+    availability: 'Mon-Thu, 8am-2pm',
+    sessionTypes: ['chat', 'call', 'home'],
+    bio: 'A passionate advocate for individuals living with disabilities, focusing on self-worth and navigating societal barriers.',
+    accessibilityOptions: ['ASL (Basic)', 'Accessible Transport Coordination for Visits'],
+    costRange: 'low',
+    isSubsidized: true,
+    imageUrl: 'https://picsum.photos/seed/nneka/200/200'
+  },
+  {
+    id: '18',
+    name: 'Tunde Bakare',
+    expertise: ['Entrepreneurial Stress', 'Financial Anxiety', 'Peak Performance'],
+    languages: ['English', 'Yoruba'],
+    specialties: ['CBT', 'Executive Coaching'],
+    availability: 'Mon-Fri, 7am-9am',
+    sessionTypes: ['chat', 'call'],
+    bio: 'Helping the next generation of Nigerian entrepreneurs manage the psychological toll of high-stakes business environments.',
+    accessibilityOptions: ['Strict Privacy Protocols', 'Concise Result-Oriented Sessions'],
+    costRange: 'high',
+    isSubsidized: false,
+    imageUrl: 'https://picsum.photos/seed/bakare/200/200'
   }
 ];
 
 export const MOCK_RESOURCES: Resource[] = [
   {
     id: 'r1',
-    title: 'Understanding Trauma',
+    title: 'Understanding Trauma: The Path to Recovery',
     category: 'Education',
-    content: `Trauma is a response to a deeply distressing or disturbing event that overwhelms an individual's ability to cope, causes feelings of helplessness, diminishes their sense of self and their ability to feel the full range of emotions and experiences. 
+    content: `Trauma is far more than a simple memory of a bad event; it is a profound physiological and psychological response to experiences that overwhelm our capacity to cope. It can stem from single incidents like accidents or violence, or from prolonged exposure to stressful environments, conflict, or systemic oppression. When trauma occurs, the brain's "alarm system"—the amygdala—becomes hyper-reactive, while the parts responsible for logic and calm—the prefrontal cortex—struggle to take back control.
 
-While many people experience trauma, its effects can vary significantly depending on the individual, the nature of the event, and the support systems available. Common symptoms include intrusive memories or flashbacks, avoidance behaviors, negative shifts in thinking and mood, and heightened arousal or reactivity (hypervigilance).
+The impact of trauma can manifest in numerous ways:
+1. **Hyperarousal:** Feeling constantly "on edge," easily startled, or having difficulty sleeping. This is your body staying in a permanent state of "fight or flight."
+2. **Intrusive Memories:** Flashbacks or nightmares that make you feel like you are re-living the trauma.
+3. **Avoidance:** Steering clear of people, places, or thoughts that remind you of the event, which can lead to social isolation.
+4. **Dissociation:** Feeling "numb" or disconnected from your body and your surroundings.
 
-It's important to understand that recovery from trauma is a process, not an event. It often involves creating a sense of safety, developing coping strategies for managing symptoms, and eventually processing the traumatic experience in a supportive environment. Techniques like Cognitive Behavioral Therapy (CBT), Eye Movement Desensitization and Reprocessing (EMDR), and mindfulness-based practices have shown great efficacy in helping individuals regain control over their lives and build resilience.`,
-    readTime: '5 min'
+Healing from trauma is not about "getting over it" but about integration. This involves:
+- **Establishing Safety:** Creating a predictable, secure environment is the first and most crucial step.
+- **Grounding Techniques:** Learning to stay in the present moment through breathing and sensory exercises.
+- **Professional Support:** Therapies like CBT (Cognitive Behavioral Therapy) help reframe traumatic thoughts, while EMDR (Eye Movement Desensitization and Reprocessing) can help the recursive loop of traumatic memories find a place of peace.
+- **Community Connection:** Sharing experiences in safe spaces can reduce the shame and isolation so often associated with traumatic events. 
+
+Remember, your trauma does not define your future. With patience, self-compassion, and the right support, the brain and body can unlearn the survival responses that are no longer serving you.`,
+    readTime: '8 min'
   },
   {
     id: 'r2',
-    title: 'Coping with Depression',
+    title: 'Navigating Depression: From Darkness to Light',
     category: 'Self-Care',
-    content: `Depression can feel like a heavy cloud that persists for weeks or months, affecting your thoughts, feelings, and daily activities. It is more than just feeling "blue" or having a bad day; it is a clinical condition that requires understanding and, often, professional support.
+    content: `Depression is often described as a dark cloud, but for many, it feels more like a heavy, invisible weight that makes even the simplest tasks—like getting out of bed or answering a text—feel monumental. It is a clinical condition that affects approximately 5% of adults globally, yet it is still deeply misunderstood.
 
-Living with depression often involves dealing with persistent sadness, a lack of interest in previously enjoyed activities, changes in appetite or sleep patterns, and feelings of worthlessness. However, depression is also highly treatable. 
+The symptoms of depression go beyond persistent sadness and can include:
+- **Anhedonia:** The loss of interest or pleasure in activities you once loved.
+- **Physical Fatigue:** A constant sense of exhaustion that sleep doesn't seem to fix.
+- **Cognitive Fog:** Difficulty concentrating, making decisions, or remembering details.
+- **Changes in Appetite:** Either overeating or a significant loss of appetite.
+- **Feelings of Worthlessness:** A loud "inner critic" that focuses on perceived failures or hopelessness.
 
-Self-care strategies play a crucial role in management. This includes establishing a consistent daily routine, engaging in light physical activity, maintaining social connections (even when it feels difficult), and practicing self-compassion. Breaking large tasks into smaller, manageable steps can help reduce feelings of being overwhelmed. Remember, you don't have to carry this burden alone. Small, consistent actions can lead to significant improvements over time, and reaching out for help is a sign of strength and self-awareness.`,
-    readTime: '4 min'
+Overcoming depression is a journey of small, consistent steps. Here are some evidence-based strategies:
+- **Behavioral Activation:** This involves doing things even when you don't feel like it. Start tiny—maybe just standing outside for five minutes.
+- **Routine Building:** Depression thrives on chaos and isolation. A stable routine provides a "scaffold" for your day.
+- **Physical Activity:** Exercise releases endorphins and can be as effective as some medications for mild to moderate depression.
+- **Mindfulness and Compassion:** Learning to observe your thoughts without believing every "dark" thing your mind says.
+- **Medication and Therapy:** For many, a combination of psychotherapy and medication provides the necessary chemical and emotional balance to start moving forward again.
+
+If you are currently in the midst of a depressive episode, know this: your brain is currently telling you that things will never get better. That is a symptom of the condition, not a fact of your life. Reach out—even if it's just to say "I'm struggling." You don't have to carry the weight alone.`,
+    readTime: '7 min'
   },
   {
     id: 'r3',
-    title: 'Stress Management Basics',
+    title: 'Advanced Stress Management for Modern Life',
     category: 'Techniques',
-    content: `In today's fast-paced world, learning to manage stress is vital for long-term mental and physical health. Stress is the body's natural response to perceived threats, but chronic stress can lead to burnout, anxiety, and various health issues.
+    content: `Stress is a natural biological response designed to keep us alive. In the face of danger, our bodies flood with cortisol and adrenaline, preparing us to fight or run. However, in our modern world, we are rarely running from predators; instead, we are "running" from overflowing inboxes, financial pressures, and social expectations. This "chronic stress" can eventually lead to burnout, cardiovascular issues, and weakened immune systems.
 
-Effective stress management involves both immediate grounding techniques and long-term lifestyle changes. Immediate techniques include deep breathing exercises (such as box breathing or the 4-7-8 technique), progressive muscle relaxation, and sensory grounding (focusing on what you can see, hear, and feel in the present moment).
+Managing stress effectively requires a two-pronged approach: immediate physiological intervention and long-term lifestyle adjustment.
 
-Long-term management focuses on identifying and mitigating stressors where possible, setting healthy boundaries, and prioritizing restorative activities like adequate sleep and hobbies. Mindfulness and meditation are powerful tools for training the brain to respond to stress more calmly. By developing a "stress toolkit," you can learn to navigate life's challenges with greater ease and maintain your emotional balance even during difficult times.`,
-    readTime: '3 min'
+**Immediate Physiological "Rewiring":**
+1. **The 4-7-8 Breathing Technique:** Inhale for 4 seconds, hold for 7, and exhale slowly for 8. This directly stimulates the vagus nerve and triggers the parasympathetic nervous system (the "rest and digest" mode).
+2. **Progressive Muscle Relaxation:** Tense and then release each muscle group in your body, from your toes to your face. This helps the brain recognize and release physical tension.
+3. **The 5-4-3-2-1 Grounding Method:** Identify 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, and 1 you can taste. This pulls you out of a stressful "thought loop" and back into reality.
+
+**Long-Term Lifestyle Integration:**
+- **Boundary Setting:** Learning to say "no" is one of the most powerful stress management tools. Protect your time and energy as if they were your most valuable currency.
+- **Digital Detox:** Constant notifications keep us in a state of hyper-vigilance. Set specific times to be "offline."
+- **Restorative Sleep:** Sleep is when our brains process the emotional load of the day. Prioritizing 7-9 hours of sleep is non-negotiable for stress resilience.
+- **Nutrition and Hydration:** What we eat directly impacts our hormone levels and our ability to handle pressure.
+
+By developing a personalized "stress toolkit," you can move from reactive survival to proactive resilience. Stress is an inevitable part of life, but it doesn't have to be the defining force in yours.`,
+    readTime: '6 min'
   }
 ];
 
