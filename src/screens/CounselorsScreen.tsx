@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MOCK_COUNSELORS } from '../data/mockData';
 import { Card, Button, Badge, Modal } from '../components/UI';
-import { Search, Filter, MessageCircle, Phone, Home, ChevronRight, X, Send } from 'lucide-react';
+import { Search, Filter, MessageCircle, Phone, Home, ChevronRight, X, Send, MessageSquare } from 'lucide-react';
 import { Counselor } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppState } from '../contexts/AppStateContext';
@@ -14,7 +14,6 @@ const CounselorsScreen = () => {
   const [contactModal, setContactModal] = useState<{ type: 'chat' | 'call' | 'home', counselor: Counselor } | null>(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [message, setMessage] = useState('');
-  const [messageSent, setMessageSent] = useState(false);
   
   // Filter states
   const [filterType, setFilterType] = useState<string>('All');
@@ -43,29 +42,51 @@ const CounselorsScreen = () => {
 
   const handleBook = (type: 'chat' | 'call' | 'home') => {
     if (!selectedCounselor) return;
+    if (type === 'call') {
+      window.location.href = `tel:${selectedCounselor.phoneNumber}`;
+      return;
+    }
     setContactModal({ type, counselor: selectedCounselor });
-    setMessage(`Hi ${selectedCounselor.name}, I would like to request a ${type} session.`);
-    setMessageSent(false);
+    setMessage(
+      type === 'chat' 
+        ? `Hi ${selectedCounselor.name}, I would like to connect for support.` 
+        : `Hi ${selectedCounselor.name}, I'm interested in arranging a home visit. Could we discuss availability?`
+    );
   };
 
-  const confirmBooking = () => {
+  const handleCommSelection = (method: 'sms' | 'whatsapp') => {
     if (!contactModal) return;
+    const phone = contactModal.counselor.phoneNumber;
+    const text = message;
+
+    if (method === 'whatsapp') {
+      const cleanPhone = phone.replace(/\D/g, '');
+      const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    } else {
+      const isIOS = navigator.userAgent.match(/iPhone|iPad|iPod/i);
+      const url = `sms:${phone}${isIOS ? '&' : '?'}body=${encodeURIComponent(text)}`;
+      window.location.href = url;
+    }
     
+    // Also log as a session in app state
     addSession({
+      id: Math.random().toString(36).substr(2, 9),
       counselorId: contactModal.counselor.id,
       counselorName: contactModal.counselor.name,
-      date: new Date(Date.now() + 86400000).toISOString().split('T')[0], // Tomorrow
-      time: '10:00 AM',
+      date: new Date().toISOString().split('T')[0],
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       type: contactModal.type,
       status: 'upcoming'
     });
-    
-    setMessageSent(true);
-    setTimeout(() => {
-      setContactModal(null);
-      setSelectedCounselor(null);
-      navigate('/sessions');
-    }, 1500);
+
+    setContactModal(null);
+    setSelectedCounselor(null);
+    navigate('/sessions');
+  };
+
+  const confirmBooking = () => {
+    // This is now handled in handleCommSelection
   };
 
   const FilterBadge = ({ active, label, onClick }: { active: boolean, label: string, onClick: () => void, key?: string }) => (
@@ -240,56 +261,49 @@ const CounselorsScreen = () => {
       <Modal 
         isOpen={!!contactModal} 
         onClose={() => setContactModal(null)}
-        title={`Contact ${contactModal?.counselor.name}`}
+        title={contactModal?.type === 'home' ? 'Arrange Home Visit' : `Contact ${contactModal?.counselor.name}`}
       >
         {contactModal && (
-          <div className="space-y-4">
-            {messageSent ? (
-              <div className="text-center py-8 space-y-4">
-                <div className="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto">
-                  <Send size={32} />
+          <div className="space-y-6">
+            <div className="p-4 bg-sage-50 rounded-2xl space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-sage-600 shadow-sm">
+                  {contactModal.type === 'chat' ? <MessageCircle size={20} /> : <Home size={20} />}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Request Sent!</h3>
-                <p className="text-gray-500 text-sm">
-                  {contactModal.counselor.name} will review your request and get back to you shortly.
-                </p>
+                <div>
+                  <p className="text-sm font-bold text-gray-900 capitalize">{contactModal.type === 'home' ? 'Home Visit' : 'Message'}</p>
+                  <p className="text-xs text-gray-500">{contactModal.counselor.phoneNumber}</p>
+                </div>
               </div>
-            ) : (
-              <>
-                <div className="flex gap-3 items-center p-3 bg-sage-50 rounded-xl">
-                  <div className="w-10 h-10 bg-sage-200 rounded-full flex items-center justify-center text-sage-700">
-                    {contactModal.type === 'call' ? <Phone size={20} /> : contactModal.type === 'chat' ? <MessageCircle size={20} /> : <Home size={20} />}
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-gray-900">
-                      {contactModal.type === 'call' ? 'Phone Call' : contactModal.type === 'chat' ? 'Text Message' : 'Home Visit Request'}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {contactModal.type === 'call' ? (
-                        <a href="tel:+1234567890" className="text-sage-600 hover:underline">+1 (555) 123-4567</a>
-                      ) : contactModal.type === 'chat' ? (
-                        <a href="sms:+1234567890" className="text-sage-600 hover:underline">+1 (555) 123-4567</a>
-                      ) : (
-                        'Schedule a visit'
-                      )}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-400 uppercase">Message</label>
-                  <textarea 
-                    className="w-full p-3 rounded-xl border border-sage-100 focus:ring-2 focus:ring-sage-500 outline-none min-h-[100px] text-sm"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                </div>
+              <textarea 
+                className="w-full p-3 rounded-xl border border-white bg-white/50 focus:ring-2 focus:ring-sage-500 outline-none min-h-[100px] text-sm"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type your message here..."
+              />
+            </div>
 
-                <Button className="w-full" onClick={confirmBooking}>
-                  Send Request
+            <div className="space-y-3">
+              <p className="text-xs font-bold text-gray-400 uppercase text-center tracking-widest">Send via</p>
+              <div className="grid grid-cols-2 gap-3">
+                <Button 
+                  onClick={() => handleCommSelection('whatsapp')}
+                  className="bg-[#25D366] hover:bg-[#128C7E] text-white border-none py-4"
+                >
+                  WhatsApp
                 </Button>
-              </>
-            )}
+                <Button 
+                  onClick={() => handleCommSelection('sms')}
+                  variant="outline"
+                  className="py-4"
+                >
+                  SMS Message
+                </Button>
+              </div>
+              <p className="text-[10px] text-gray-400 text-center">
+                Messaging may incur standard carrier rates.
+              </p>
+            </div>
           </div>
         )}
       </Modal>

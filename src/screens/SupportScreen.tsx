@@ -117,11 +117,12 @@ const SupportScreen = () => {
                   <p className="text-xs text-red-700">If you are in immediate danger, call emergency services.</p>
                 </div>
               </div>
-              <a href="tel:911" className="block">
-                <Button variant="danger" className="w-full py-4 text-lg">
-                  <Phone size={20} /> Call 911 / Emergency
+              <a href="tel:112" className="block outline-none active:scale-[0.98] transition-transform">
+                <Button variant="danger" className="w-full py-4 text-lg flex items-center justify-center gap-3">
+                  <Phone size={24} /> Call 112 (Emergency)
                 </Button>
               </a>
+              <p className="text-[10px] text-center text-red-400 font-medium">Standard emergency response number in Nigeria.</p>
             </Card>
 
             <div className="space-y-3">
@@ -129,29 +130,29 @@ const SupportScreen = () => {
               <Card className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-sage-50 text-sage-500 rounded-xl flex items-center justify-center">
-                    <HeartPulse size={20} />
+                    <AlertCircle size={20} />
                   </div>
                   <div>
-                    <p className="text-sm font-bold">Crisis Text Line</p>
-                    <p className="text-xs text-gray-500">Text HOME to 741741</p>
+                    <p className="text-sm font-bold">Nigeria Crisis Line</p>
+                    <p className="text-xs text-gray-500">Call 0800-000-0000</p>
                   </div>
                 </div>
-                <a href="sms:741741?body=HOME">
-                  <Button variant="outline" size="sm">Text</Button>
+                <a href="tel:08000000000">
+                  <Button variant="outline" size="sm">Call</Button>
                 </a>
               </Card>
               <Card className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-sage-50 text-sage-500 rounded-xl flex items-center justify-center">
-                    <Phone size={20} />
+                    <MessageCircle size={20} />
                   </div>
                   <div>
-                    <p className="text-sm font-bold">Suicide Prevention</p>
-                    <p className="text-xs text-gray-500">Call 988</p>
+                    <p className="text-sm font-bold">Mental Health Support</p>
+                    <p className="text-xs text-gray-500">WhatsApp Support</p>
                   </div>
                 </div>
-                <a href="tel:988">
-                  <Button variant="outline" size="sm">Call</Button>
+                <a href="https://wa.me/2348000000000?text=I%20need%20support" target="_blank" rel="noreferrer">
+                  <Button variant="outline" size="sm">Chat</Button>
                 </a>
               </Card>
             </div>

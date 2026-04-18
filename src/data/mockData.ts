@@ -13,7 +13,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Sign Language Support', 'Wheelchair Accessible Home Visits'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/sarah/200/200'
+    imageUrl: 'https://picsum.photos/seed/sarah/200/200',
+    phoneNumber: '+2348000000001'
   },
   {
     id: '2',
@@ -27,7 +28,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Screen Reader Friendly Chat', 'Voice-to-Text Support'],
     costRange: 'medium',
     isSubsidized: false,
-    imageUrl: 'https://picsum.photos/seed/marcus/200/200'
+    imageUrl: 'https://picsum.photos/seed/marcus/200/200',
+    phoneNumber: '+2348000000002'
   },
   {
     id: '3',
@@ -41,7 +43,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Bilingual Support', 'Sliding Scale Fees'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/elena/200/200'
+    imageUrl: 'https://picsum.photos/seed/elena/200/200',
+    phoneNumber: '+2348000000003'
   },
   {
     id: '4',
@@ -55,7 +58,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Igbo Language Support', 'Mobile Clinic Visits'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/chinedu/200/200'
+    imageUrl: 'https://picsum.photos/seed/chinedu/200/200',
+    phoneNumber: '+2348000000004'
   },
   {
     id: '5',
@@ -69,7 +73,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Hausa Language Support', 'Low-Data Video Option'],
     costRange: 'medium',
     isSubsidized: false,
-    imageUrl: 'https://picsum.photos/seed/amina/200/200'
+    imageUrl: 'https://picsum.photos/seed/amina/200/200',
+    phoneNumber: '+2348000000005'
   },
   {
     id: '6',
@@ -83,7 +88,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Yoruba Language Support', 'Home Visits in Lagos/Ibadan'],
     costRange: 'medium',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/olumide/200/200'
+    imageUrl: 'https://picsum.photos/seed/olumide/200/200',
+    phoneNumber: '+2348000000006'
   },
   {
     id: '7',
@@ -97,7 +103,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Multi-lingual Support', 'Offline Session Recording'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/zainab/200/200'
+    imageUrl: 'https://picsum.photos/seed/zainab/200/200',
+    phoneNumber: '+2348000000007'
   },
   {
     id: '8',
@@ -111,7 +118,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Pidgin Language Support', 'Accessible Community Center Visits'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/tunde/200/200'
+    imageUrl: 'https://picsum.photos/seed/tunde/200/200',
+    phoneNumber: '+2348000000008'
   },
   {
     id: '9',
@@ -125,7 +133,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Braille Support (Printed)', 'Home Visits for Late-Term Mothers'],
     costRange: 'medium',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/ifeoma/200/200'
+    imageUrl: 'https://picsum.photos/seed/ifeoma/200/200',
+    phoneNumber: '+2348000000009'
   },
   {
     id: '10',
@@ -139,7 +148,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Remote Area Connectivity Support', 'Mobile Clinic Access'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/tariye/200/200'
+    imageUrl: 'https://picsum.photos/seed/tariye/200/200',
+    phoneNumber: '+2348000000010'
   },
   {
     id: '11',
@@ -153,7 +163,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Multi-lingual Support', 'Crisis Hotline Access'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/yakubu/200/200'
+    imageUrl: 'https://picsum.photos/seed/yakubu/200/200',
+    phoneNumber: '+2348000000011'
   },
   {
     id: '12',
@@ -167,7 +178,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Sensory-Friendly Communication', 'Visual Calendars & Aids'],
     costRange: 'medium',
     isSubsidized: false,
-    imageUrl: 'https://picsum.photos/seed/funke/200/200'
+    imageUrl: 'https://picsum.photos/seed/funke/200/200',
+    phoneNumber: '+2348000000012'
   },
   {
     id: '13',
@@ -181,7 +193,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Confidentiality Focused', 'Home Visits in South-East'],
     costRange: 'medium',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/emeka/200/200'
+    imageUrl: 'https://picsum.photos/seed/emeka/200/200',
+    phoneNumber: '+2348000000013'
   },
   {
     id: '14',
@@ -195,7 +208,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Low-Data Chat Interface', 'Late Night Sessions'],
     costRange: 'high',
     isSubsidized: false,
-    imageUrl: 'https://picsum.photos/seed/temi/200/200'
+    imageUrl: 'https://picsum.photos/seed/temi/200/200',
+    phoneNumber: '+2348000000014'
   },
   {
     id: '15',
@@ -209,7 +223,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Large Text Home Materials', 'Home Visits for Senior Citizens'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/sade/200/200'
+    imageUrl: 'https://picsum.photos/seed/sade/200/200',
+    phoneNumber: '+2348000000015'
   },
   {
     id: '16',
@@ -223,7 +238,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Hausa/Arabic Support', 'Safe Space for Identity Exploration'],
     costRange: 'medium',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/ibrahim/200/200'
+    imageUrl: 'https://picsum.photos/seed/ibrahim/200/200',
+    phoneNumber: '+2348000000016'
   },
   {
     id: '17',
@@ -237,7 +253,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['ASL (Basic)', 'Accessible Transport Coordination for Visits'],
     costRange: 'low',
     isSubsidized: true,
-    imageUrl: 'https://picsum.photos/seed/nneka/200/200'
+    imageUrl: 'https://picsum.photos/seed/nneka/200/200',
+    phoneNumber: '+2348000000017'
   },
   {
     id: '18',
@@ -251,7 +268,8 @@ export const MOCK_COUNSELORS: Counselor[] = [
     accessibilityOptions: ['Strict Privacy Protocols', 'Concise Result-Oriented Sessions'],
     costRange: 'high',
     isSubsidized: false,
-    imageUrl: 'https://picsum.photos/seed/bakare/200/200'
+    imageUrl: 'https://picsum.photos/seed/bakare/200/200',
+    phoneNumber: '+2348000000018'
   }
 ];
 

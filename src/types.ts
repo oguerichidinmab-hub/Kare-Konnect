@@ -27,6 +27,7 @@ export interface Counselor {
   costRange: 'low' | 'medium' | 'high';
   isSubsidized: boolean;
   imageUrl: string;
+  phoneNumber: string;
 }
 
 export interface Session {

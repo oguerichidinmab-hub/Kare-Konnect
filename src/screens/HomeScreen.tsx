@@ -180,22 +180,22 @@ const HomeScreen = () => {
       </Card>
 
       {/* Emergency Help Shortcut */}
-      <Card className="bg-red-50 border-red-100">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-red-100 text-red-600 rounded-xl flex items-center justify-center">
-              <AlertCircle size={20} />
+      <Link to="/support" state={{ tab: 'emergency' }}>
+        <Card className="bg-red-50 border-red-100 active:scale-[0.98] transition-transform">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-red-100 text-red-600 rounded-xl flex items-center justify-center">
+                <AlertCircle size={20} />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-red-900">Need Urgent Help?</p>
+                <p className="text-xs text-red-700">Crisis support is available 24/7.</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-bold text-red-900">Need Urgent Help?</p>
-              <p className="text-xs text-red-700">Crisis support is available 24/7.</p>
-            </div>
-          </div>
-          <Link to="/support">
             <ChevronRight className="text-red-400" />
-          </Link>
-        </div>
-      </Card>
+          </div>
+        </Card>
+      </Link>
     </div>
   );
 };
