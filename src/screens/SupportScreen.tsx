@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Badge, Modal } from '../components/UI';
 import { 
   HeartPulse, Home, AlertCircle, 
@@ -11,12 +11,20 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useAppState } from '../contexts/AppStateContext';
 import { cn } from '../lib/utils';
 import { Resource } from '../types';
+import { useLocation } from 'react-router-dom';
 
 const SupportScreen = () => {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<'resources' | 'emergency' | 'home-visit'>('resources');
   const [showSuccess, setShowSuccess] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<Resource | null>(null);
   const { profile } = useAppState();
+
+  useEffect(() => {
+    if (location.state?.tab) {
+      setActiveTab(location.state.tab);
+    }
+  }, [location.state]);
 
   const handleHomeVisitSubmit = (e: React.FormEvent) => {
     e.preventDefault();

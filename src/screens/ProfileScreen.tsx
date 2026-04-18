@@ -4,7 +4,7 @@ import { useAccessibility } from '../contexts/AccessibilityContext';
 import { Card, Button, Badge, Modal } from '../components/UI';
 import { 
   User, Settings, Bell, Shield, 
-  Accessibility, LogOut, ChevronRight,
+  Accessibility, LogOut, ChevronRight, CheckCircle2,
   Moon, Sun, Type, Eye, Volume2,
   TrendingUp, Award, Calendar, Download, Database, Trash2, AlertCircle
 } from 'lucide-react';
@@ -15,7 +15,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const ProfileScreen = () => {
-  const { profile, moods, sessions } = useAppState();
+  const { profile, moods, sessions, setProfile } = useAppState();
   const { settings, updateSettings } = useAccessibility();
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
@@ -25,10 +25,41 @@ const ProfileScreen = () => {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showData, setShowData] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+
+  // Form state
+  const [editForm, setEditForm] = useState({ 
+    name: profile?.name || '', 
+    location: profile?.location || '', 
+    trustedContact: profile?.trustedContact || '' 
+  });
 
   // Mock settings state
   const [notifSettings, setNotifSettings] = useState({ reminders: true, counselor: true, wellness: false });
   const [privacySettings, setPrivacySettings] = useState({ visibility: 'private', contact: 'counselors_only', appLock: false });
+
+  useEffect(() => {
+    if (profile) {
+      setEditForm({ 
+        name: profile.name, 
+        location: profile.location || '', 
+        trustedContact: profile.trustedContact || '' 
+      });
+    }
+  }, [profile]);
+
+  const handleUpdateProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (profile) {
+      setProfile({
+        ...profile,
+        name: editForm.name,
+        location: editForm.location,
+        trustedContact: editForm.trustedContact
+      });
+    }
+    setShowEditProfile(false);
+  };
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -59,19 +90,56 @@ const ProfileScreen = () => {
   const moodCount = moods.length;
   const sessionCount = sessions.filter(s => s.status === 'completed').length;
 
+  const [showExportSuccess, setShowExportSuccess] = useState(false);
+
+  const handleExportData = () => {
+    setShowExportSuccess(true);
+    setTimeout(() => setShowExportSuccess(false), 3000);
+  };
+
+  const handleClearHistory = () => {
+    // In a real app, this would clear localStorage/DB
+    setShowDeleteConfirm(false);
+    setShowData(false);
+    setShowExportSuccess(true); // Reuse success state for simplicity
+    setTimeout(() => setShowExportSuccess(false), 3000);
+  };
+
   return (
     <div className="pt-6 px-4 space-y-6">
+      {/* Export Success Message */}
+      <AnimatePresence>
+        {showExportSuccess && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="fixed bottom-24 left-4 right-4 z-[100] bg-sage-600 text-white p-4 rounded-2xl flex items-center gap-3 shadow-xl"
+          >
+            <CheckCircle2 size={24} className="shrink-0" />
+            <div>
+              <p className="text-sm font-bold">Action Successful</p>
+              <p className="text-xs opacity-80">Your request has been processed.</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Profile Header */}
-      <div className="flex flex-col items-center text-center space-y-3">
-        <div className="w-24 h-24 bg-white rounded-[2.5rem] card-shadow flex items-center justify-center relative">
+      <div 
+        className="flex flex-col items-center text-center space-y-3 cursor-pointer group" 
+        onClick={() => setShowEditProfile(true)}
+      >
+        <div className="w-24 h-24 bg-white rounded-[2.5rem] card-shadow flex items-center justify-center relative group-hover:scale-105 transition-transform duration-300">
           <User size={48} className="text-sage-500" />
-          <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-sage-500 rounded-xl border-4 border-sage-50 flex items-center justify-center text-white">
-            <Award size={16} />
+          <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-sage-500 rounded-xl border-4 border-sage-50 flex items-center justify-center text-white shadow-sm">
+            <Settings size={14} />
           </div>
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{profile?.name}</h1>
+          <h1 className="text-2xl font-bold text-gray-900 group-hover:text-sage-600 transition-colors">{profile?.name}</h1>
           <p className="text-sm text-gray-500">{profile?.location || 'Location not set'}</p>
+          <Button variant="ghost" size="sm" className="mt-1 h-auto py-1 text-[10px] uppercase font-bold tracking-widest text-sage-500">Edit Profile</Button>
         </div>
       </div>
 
@@ -370,7 +438,7 @@ const ProfileScreen = () => {
         <div className="space-y-4">
           <p className="text-sm text-gray-500 mb-4">Manage your personal data stored in Kare Konnect.</p>
           <div className="space-y-3">
-            <Button variant="outline" className="w-full justify-between" onClick={() => alert('Exporting data...')}>
+            <Button variant="outline" className="w-full justify-between" onClick={handleExportData}>
               Export My Data <Download size={16} />
             </Button>
             <Button variant="outline" className="w-full justify-between" onClick={() => setShowDeleteConfirm(true)}>
@@ -391,14 +459,50 @@ const ProfileScreen = () => {
           </div>
           <div className="flex gap-3">
             <Button variant="ghost" className="flex-1" onClick={() => setShowDeleteConfirm(false)}>Cancel</Button>
-            <Button variant="danger" className="flex-1" onClick={() => {
-              setShowDeleteConfirm(false);
-              setShowData(false);
-              // Mock delete action
-              alert('Data deleted successfully.');
-            }}>Confirm Delete</Button>
+            <Button variant="danger" className="flex-1" onClick={handleClearHistory}>Confirm Delete</Button>
           </div>
         </div>
+      </Modal>
+
+      {/* Edit Profile Modal */}
+      <Modal 
+        isOpen={showEditProfile} 
+        onClose={() => setShowEditProfile(false)} 
+        title="Edit Profile"
+      >
+        <form onSubmit={handleUpdateProfile} className="space-y-4">
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-gray-400 uppercase">Full Name</label>
+            <input 
+              required
+              type="text" 
+              className="w-full p-3 rounded-xl border border-sage-100 bg-white focus:ring-2 focus:ring-sage-500 outline-none text-sm"
+              value={editForm.name}
+              onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-gray-400 uppercase">Location</label>
+            <input 
+              type="text" 
+              placeholder="e.g., Lagos, Nigeria"
+              className="w-full p-3 rounded-xl border border-sage-100 bg-white focus:ring-2 focus:ring-sage-500 outline-none text-sm"
+              value={editForm.location}
+              onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-gray-400 uppercase">Trusted Contact Email</label>
+            <input 
+              type="email" 
+              placeholder="trusted@contact.com"
+              className="w-full p-3 rounded-xl border border-sage-100 bg-white focus:ring-2 focus:ring-sage-500 outline-none text-sm"
+              value={editForm.trustedContact}
+              onChange={(e) => setEditForm({ ...editForm, trustedContact: e.target.value })}
+            />
+          </div>
+          <Button type="submit" className="w-full py-4 mt-2">Update Profile</Button>
+        </form>
       </Modal>
     </div>
   );

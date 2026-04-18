@@ -154,9 +154,9 @@ const HomeScreen = () => {
             <span className="text-sm font-bold">AI Assistant</span>
           </Card>
         </Link>
-        <Link to="/support">
-          <Card className="h-full flex flex-col items-center text-center gap-3 py-6">
-            <div className="w-12 h-12 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center">
+        <Link to="/support" state={{ tab: 'home-visit' }}>
+          <Card className="h-full flex flex-col items-center text-center gap-3 py-6 group hover:bg-orange-50/50 transition-colors">
+            <div className="w-12 h-12 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
               <HomeIcon size={24} />
             </div>
             <span className="text-sm font-bold">Home Visit</span>
